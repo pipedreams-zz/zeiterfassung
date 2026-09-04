@@ -71,6 +71,32 @@ docker compose cp zeiterfassung:/data/backup.db ./backup-$(date +%F).db
 
 Migrationen laufen bei jedem Start automatisch (`instrumentation.ts`).
 
+## Deploy auf ampsrvr.xyz (timetrack.ampsrvr.xyz)
+
+Jeder Push auf `main` lässt GitHub Actions Typecheck, Lint und Tests laufen und baut
+danach das Image `ghcr.io/pipedreams-zz/zeiterfassung:latest`. Auf dem Host holt
+Watchtower neue Images automatisch (nur Container mit Watchtower-Label, alle
+5 Minuten). Die Vorlagen liegen unter `deploy/`:
+
+| Datei                                     | Ziel auf dem Host                                                                                           |
+| ----------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `deploy/zeiterfassung/docker-compose.yml` | `~/stacks/zeiterfassung/docker-compose.yml`                                                                 |
+| `deploy/zeiterfassung/.env.example`       | `~/stacks/zeiterfassung/.env` (ausgefüllt, `chmod 600`)                                                     |
+| `deploy/watchtower/docker-compose.yml`    | `~/stacks/watchtower/docker-compose.yml`                                                                    |
+| `deploy/Caddyfile.timetrack`              | anhängen an `/opt/n8n/Caddyfile`, dann `docker exec n8n-caddy-1 caddy reload --config /etc/caddy/Caddyfile` |
+
+Der App-Container hängt im Compose-Netz `n8n_default` des bestehenden Caddy und
+veröffentlicht keinen Port; Caddy besorgt das Zertifikat selbst.
+
+Manuell aktualisieren geht jederzeit, auch ohne Watchtower:
+
+```bash
+cd ~/stacks/zeiterfassung && docker compose pull && docker compose up -d
+```
+
+Auf eine bestimmte Version zurück: im Compose-File `:latest` durch `:sha-<kurzer Commit>`
+ersetzen und `docker compose up -d` (Watchtower folgt dann diesem Tag).
+
 ## Rollen und Sichtbarkeit
 
 Jeder Benutzer gehört zu einer Organisation mit der Rolle `owner` oder

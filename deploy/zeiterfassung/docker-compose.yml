@@ -1,0 +1,23 @@
+# Host-Stack: ~/stacks/zeiterfassung auf ampsrvr.xyz
+# Image kommt aus GitHub Actions; Watchtower zieht neue Versionen.
+services:
+  zeiterfassung:
+    image: ghcr.io/pipedreams-zz/zeiterfassung:latest
+    container_name: zeiterfassung
+    restart: unless-stopped
+    env_file: [.env]
+    environment:
+      DATABASE_PATH: /data/zeiterfassung.db
+    volumes:
+      - zeiterfassung-data:/data
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+    # Kein `ports:` — erreichbar nur über Caddy im gemeinsamen Netz.
+
+volumes:
+  zeiterfassung-data:
+
+networks:
+  default:
+    name: n8n_default
+    external: true

@@ -1,0 +1,13 @@
+# Host-Stack: ~/stacks/watchtower auf ampsrvr.xyz
+# Aktualisiert ausschließlich Container mit dem Label
+# com.centurylinklabs.watchtower.enable=true; n8n und caddy bleiben unberührt.
+services:
+  watchtower:
+    image: containrrr/watchtower:latest
+    container_name: watchtower
+    restart: unless-stopped
+    command: --label-enable --cleanup --interval 300
+    environment:
+      TZ: Europe/Berlin
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
