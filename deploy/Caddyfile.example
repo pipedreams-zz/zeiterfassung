@@ -1,0 +1,5 @@
+# Site-Block für einen vorhandenen Caddy im selben Docker-Netz.
+zeit.example.com {
+  encode zstd gzip
+  reverse_proxy zeiterfassung:3000
+}

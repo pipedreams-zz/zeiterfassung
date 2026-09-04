@@ -52,7 +52,7 @@ export function ProjectForm({
             value={v.code}
             onChange={(e) => setV({ ...v, code: e.target.value })}
             maxLength={20}
-            placeholder="z. B. RTX-12"
+            placeholder="z. B. P-12"
           />
         </Field>
       </div>

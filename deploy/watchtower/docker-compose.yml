@@ -1,6 +1,6 @@
-# Host-Stack: ~/stacks/watchtower auf ampsrvr.xyz
+# Beispiel für den Host: ~/stacks/watchtower
 # Aktualisiert ausschließlich Container mit dem Label
-# com.centurylinklabs.watchtower.enable=true; n8n und caddy bleiben unberührt.
+# com.centurylinklabs.watchtower.enable=true; andere Container bleiben unberührt.
 services:
   watchtower:
     image: containrrr/watchtower:latest

@@ -1,8 +1,8 @@
-# Host-Stack: ~/stacks/zeiterfassung auf ampsrvr.xyz
-# Image kommt aus GitHub Actions; Watchtower zieht neue Versionen.
+# Beispiel für den Host: ~/stacks/zeiterfassung
+# Image aus GitHub Actions (GHCR); Watchtower zieht neue Versionen.
 services:
   zeiterfassung:
-    image: ghcr.io/pipedreams-zz/zeiterfassung:latest
+    image: ghcr.io/pipedreams-zz/zeiterfassung:latest # oder eigenes Image
     container_name: zeiterfassung
     restart: unless-stopped
     env_file: [.env]
@@ -12,12 +12,12 @@ services:
       - zeiterfassung-data:/data
     labels:
       com.centurylinklabs.watchtower.enable: "true"
-    # Kein `ports:` — erreichbar nur über Caddy im gemeinsamen Netz.
+    # Kein `ports:` — erreichbar nur über den Reverse-Proxy im gemeinsamen Netz.
 
 volumes:
   zeiterfassung-data:
 
 networks:
   default:
-    name: n8n_default
+    name: n8n_default # Netz des vorhandenen Reverse-Proxys
     external: true

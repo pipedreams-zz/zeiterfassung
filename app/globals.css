@@ -2,8 +2,7 @@
 @import "./tokens.css";
 
 /*
- * Schriften der Designbaseline, lokal eingebunden — keine externen
- * Schriftdienste, kein CDN.
+ * Schriften lokal eingebunden — keine externen Schriftdienste, kein CDN.
  */
 @font-face {
   font-family: "Space Grotesk";
@@ -30,76 +29,76 @@
 }
 
 @theme inline {
-  /* Flächen der Baseline. */
-  --color-desk: var(--rtx-ai-bg-desk);
-  --color-app: var(--rtx-ai-bg-app);
-  --color-bar: var(--rtx-ai-surface-bar);
-  --color-panel: var(--rtx-ai-surface-panel);
-  --color-raised: var(--rtx-ai-surface-raised);
-  --color-inset: var(--rtx-ai-surface-inset);
-  --color-select: var(--rtx-ai-surface-select);
-  --color-chip: var(--rtx-ai-surface-chip);
-  --color-canvas: var(--rtx-ai-canvas);
-  --color-canvas-plain: var(--rtx-ai-canvas-plain);
-  --color-tool: var(--rtx-ai-tool-bg);
+  /* Flächen. */
+  --color-desk: var(--zf-bg-desk);
+  --color-app: var(--zf-bg-app);
+  --color-bar: var(--zf-surface-bar);
+  --color-panel: var(--zf-surface-panel);
+  --color-raised: var(--zf-surface-raised);
+  --color-inset: var(--zf-surface-inset);
+  --color-select: var(--zf-surface-select);
+  --color-chip: var(--zf-surface-chip);
+  --color-canvas: var(--zf-canvas);
+  --color-canvas-plain: var(--zf-canvas-plain);
+  --color-tool: var(--zf-tool-bg);
 
   /* Tinte. */
-  --color-ink-1: var(--rtx-ai-ink-1);
-  --color-ink-2: var(--rtx-ai-ink-2);
-  --color-ink-3: var(--rtx-ai-ink-3);
-  --color-ink-off: var(--rtx-ai-ink-disabled);
-  --color-on-accent: var(--rtx-ai-ink-on-accent);
-  --color-accent: var(--rtx-ai-accent);
-  --color-attention: var(--rtx-ai-attention);
-  --color-focus: var(--rtx-ai-focus);
-  --color-scrim: var(--rtx-ai-scrim);
+  --color-ink-1: var(--zf-ink-1);
+  --color-ink-2: var(--zf-ink-2);
+  --color-ink-3: var(--zf-ink-3);
+  --color-ink-off: var(--zf-ink-disabled);
+  --color-on-accent: var(--zf-ink-on-accent);
+  --color-accent: var(--zf-accent);
+  --color-attention: var(--zf-attention);
+  --color-focus: var(--zf-focus);
+  --color-scrim: var(--zf-scrim);
 
   /* Linien. */
-  --color-line-soft: var(--rtx-ai-line-soft);
-  --color-line: var(--rtx-ai-line);
-  --color-line-strong: var(--rtx-ai-line-strong);
-  --color-line-frame: var(--rtx-ai-line-frame);
-  --color-line-dashed: var(--rtx-ai-line-dashed);
+  --color-line-soft: var(--zf-line-soft);
+  --color-line: var(--zf-line);
+  --color-line-strong: var(--zf-line-strong);
+  --color-line-frame: var(--zf-line-frame);
+  --color-line-dashed: var(--zf-line-dashed);
 
-  --font-sans: var(--rtx-font-sans);
-  --font-display: var(--rtx-font-display);
-  --font-mono: var(--rtx-font-mono);
+  --font-sans: var(--zf-font-sans);
+  --font-display: var(--zf-font-display);
+  --font-mono: var(--zf-font-mono);
 
   /*
-   * Schriftgrade der Baseline. Kein Text unter 12 px: `text-meta` ist die
+   * Schriftgrade. Kein Text unter 12 px: `text-meta` ist die
    * kleinste Stufe, `text-ui` der normale UI-Text.
    */
-  --text-meta: var(--rtx-ai-meta-size);
-  --text-meta--line-height: var(--rtx-ai-meta-line);
-  --text-ui-sm: var(--rtx-ai-ui-size-sm);
+  --text-meta: var(--zf-meta-size);
+  --text-meta--line-height: var(--zf-meta-line);
+  --text-ui-sm: var(--zf-ui-size-sm);
   --text-ui-sm--line-height: 1.5;
-  --text-ui: var(--rtx-ai-ui-size);
+  --text-ui: var(--zf-ui-size);
   --text-ui--line-height: 1.5;
-  --text-body: var(--rtx-ai-body-size);
-  --text-body--line-height: var(--rtx-ai-body-line);
-  --text-title-sm: var(--rtx-ai-title-sm-size);
+  --text-body: var(--zf-body-size);
+  --text-body--line-height: var(--zf-body-line);
+  --text-title-sm: var(--zf-title-sm-size);
   --text-title-sm--line-height: 1.3;
-  --text-title-md: var(--rtx-ai-title-md-size);
+  --text-title-md: var(--zf-title-md-size);
   --text-title-md--line-height: 1.3;
-  --text-title-lg: var(--rtx-ai-title-lg-size);
+  --text-title-lg: var(--zf-title-lg-size);
   --text-title-lg--line-height: 1.2;
   /* Große Zahl der Stoppuhr und der Tagessumme. */
   --text-clock: 40px;
   --text-clock--line-height: 1;
 
-  /* Baseline D-03: keine Radien — auch für Chips und Schaltflächen. */
-  --radius-xs: var(--rtx-ai-radius);
-  --radius-sm: var(--rtx-ai-radius);
-  --radius-md: var(--rtx-ai-radius);
-  --radius-lg: var(--rtx-ai-radius);
+  /* Keine Radien — auch für Chips und Schaltflächen. */
+  --radius-xs: var(--zf-radius);
+  --radius-sm: var(--zf-radius);
+  --radius-md: var(--zf-radius);
+  --radius-lg: var(--zf-radius);
 
-  --ease-panel: var(--rtx-ai-ease);
+  --ease-panel: var(--zf-ease);
 }
 
 @layer base {
   html {
     color-scheme: dark;
-    background-color: var(--rtx-ai-bg-desk);
+    background-color: var(--zf-bg-desk);
   }
 
   html[data-theme="light"] {
@@ -107,10 +106,10 @@
   }
 
   body {
-    background-color: var(--rtx-ai-bg-desk);
-    color: var(--rtx-text-primary);
-    font-family: var(--rtx-font-sans);
-    font-size: var(--rtx-ai-body-size);
+    background-color: var(--zf-bg-desk);
+    color: var(--zf-text-primary);
+    font-family: var(--zf-font-sans);
+    font-size: var(--zf-body-size);
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
   }
@@ -126,8 +125,8 @@
    * vergessen kann.
    */
   :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
-    outline: var(--rtx-ai-focus-w) solid var(--rtx-ai-focus);
-    outline-offset: var(--rtx-ai-focus-offset);
+    outline: var(--zf-focus-w) solid var(--zf-focus);
+    outline-offset: var(--zf-focus-offset);
   }
 
   /* Formularelemente erben Schrift und Farbe; native Optik bleibt aus. */
@@ -161,11 +160,11 @@
   }
 }
 
-/* Schraffur der Zustände „fehlgeschlagen" und „verworfen" (D-09). */
-.rtx-hatch-attention {
+/* Schraffur für Fehlerzustände. */
+.hatch-attention {
   background-image: repeating-linear-gradient(
     135deg,
-    var(--rtx-ai-attention-fill) 0 1px,
+    var(--zf-attention-fill) 0 1px,
     transparent 1px 8px
   );
 }

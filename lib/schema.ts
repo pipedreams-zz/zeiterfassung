@@ -110,7 +110,7 @@ export const projects = sqliteTable(
       .notNull()
       .references(() => organizations.id, { onDelete: "cascade" }),
     name: text().notNull(),
-    /** Kurzes Kürzel für Listen und PDF, etwa „RTX-12". */
+    /** Kurzes Kürzel für Listen und PDF, etwa „P-12". */
     code: text(),
     description: text(),
     archivedAt: text("archived_at"),

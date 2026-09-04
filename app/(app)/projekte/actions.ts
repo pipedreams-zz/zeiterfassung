@@ -53,7 +53,8 @@ export async function updateProjectAction(
   const actor = await requireActor();
   const parsed = parse(form);
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Eingabe ungültig." };
-  if (getProject(actor.organizationId, id) === null) return { error: "Projekt nicht gefunden." };
+  if (getProject({ organizationId: actor.organizationId }, id) === null)
+    return { error: "Projekt nicht gefunden." };
 
   updateProject(actor.organizationId, id, parsed.data);
   revalidatePath("/projekte");

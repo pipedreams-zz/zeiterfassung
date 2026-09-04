@@ -6,6 +6,7 @@ import { Chip, COMPACT_ACTION, Panel, PanelHead } from "@/components/chrome";
 import { EmptyState } from "@/components/list-state";
 import { requireActor } from "@/lib/actor";
 import { listProjects } from "@/lib/data/projects";
+import { canSeeAllEntries, entryScope } from "@/lib/permissions";
 import { decimalHours, hm } from "@/lib/time/format";
 
 import { createProjectAction } from "./actions";
@@ -20,7 +21,8 @@ export default async function ProjectsPage({
 }) {
   const actor = await requireActor();
   const archived = (await searchParams).archiv === "1";
-  const rows = listProjects(actor.organizationId, { archived });
+  const rows = listProjects(entryScope(actor), { archived });
+  const own = !canSeeAllEntries(actor);
 
   return (
     <>
@@ -32,7 +34,9 @@ export default async function ProjectsPage({
 
       <div className="grid grid-cols-1 gap-[18px] lg:grid-cols-[1fr_380px] lg:items-start">
         <Panel>
-          <PanelHead title={`${rows.length} ${rows.length === 1 ? "Projekt" : "Projekte"}`} />
+          <PanelHead title={`${rows.length} ${rows.length === 1 ? "Projekt" : "Projekte"}`}>
+            {own ? <span className="text-meta text-ink-3">Summen: eigene Zeiten</span> : null}
+          </PanelHead>
           {rows.length === 0 ? (
             <div className="p-4">
               <EmptyState title={archived ? "Kein archiviertes Projekt" : "Noch kein Projekt"}>

@@ -2,7 +2,7 @@ import { listEntriesAscending, type EntryRow } from "./data/entries";
 import { allProjectOptions } from "./data/projects";
 import { memberOptions } from "./data/members";
 import type { Actor } from "./permissions";
-import { entryScope } from "./permissions";
+import { canSeeAllEntries, entryScope } from "./permissions";
 import { groupSeconds, sumSeconds } from "./time/aggregate";
 import { formatDate } from "./time/format";
 import {
@@ -100,7 +100,11 @@ export interface Report {
   readonly generatedAt: string;
 }
 
-export function buildReport(actor: Actor, query: ReportQuery, tz: string): Report {
+export function buildReport(actor: Actor, rawQuery: ReportQuery, tz: string): Report {
+  // Mitarbeiter: kein Personenfilter, keine Gruppierung nach Person.
+  const query: ReportQuery = canSeeAllEntries(actor)
+    ? rawQuery
+    : { ...rawQuery, userId: null, group: rawQuery.group === "user" ? "project" : rawQuery.group };
   const range = presetRange(query.preset, tz, {
     ...(query.from === null ? {} : { from: query.from }),
     ...(query.to === null ? {} : { to: query.to }),
@@ -116,7 +120,11 @@ export function buildReport(actor: Actor, query: ReportQuery, tz: string): Repor
   const chosen = projects.filter((p) => query.projectIds.includes(p.id));
   const projectLabel = chosen.length === 0 ? "Alle Projekte" : chosen.map((p) => p.name).join(", ");
   const person = members.find((m) => m.id === query.userId);
-  const personLabel = person === undefined ? "Alle Personen" : person.name;
+  const personLabel = !canSeeAllEntries(actor)
+    ? actor.name
+    : person === undefined
+      ? "Alle Personen"
+      : person.name;
 
   const keyOf = (e: EntryRow): string =>
     query.group === "project"

@@ -2,10 +2,9 @@ import type { ReactNode } from "react";
 
 /**
  * Die wiederkehrenden Bausteine der Oberfläche: Label, Panelkopf,
- * Panelabschnitt, Chip und die Schaltflächenformen. Übernommen aus
- * rendertaxi.ai (`apps/web/app/projects/workspace-chrome.tsx`), damit Maße,
- * Schriftgrade und Kanten nicht in jeder Ansicht neu — und unmerklich
- * anders — entstehen.
+ * Panelabschnitt, Chip und die Schaltflächenformen. Sie stehen an einer
+ * Stelle, damit Maße, Schriftgrade und Kanten nicht in jeder Ansicht neu —
+ * und unmerklich anders — entstehen.
  */
 
 /** 12 px, Großbuchstaben, Laufweite 0.14em. Die Beschriftung eines Bereichs. */

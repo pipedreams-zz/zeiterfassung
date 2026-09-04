@@ -2,6 +2,7 @@ import { and, asc, desc, eq, isNull, sql } from "drizzle-orm";
 
 import { db, nowIso } from "../db";
 import { uuidv7 } from "../ids";
+import type { EntryScope } from "../permissions";
 import { projects, timeEntries, type Project } from "../schema";
 
 export interface ProjectWithTotals extends Project {
@@ -9,8 +10,16 @@ export interface ProjectWithTotals extends Project {
   readonly entryCount: number;
 }
 
+/** Join-Bedingung für Summen: nur Einträge im Sichtbereich zählen. */
+function scopedEntries(scope: EntryScope) {
+  return scope.userId === undefined
+    ? eq(timeEntries.projectId, projects.id)
+    : and(eq(timeEntries.projectId, projects.id), eq(timeEntries.userId, scope.userId));
+}
+
+/** Projekte mit Summen der im Sichtbereich liegenden Einträge. */
 export function listProjects(
-  organizationId: string,
+  scope: EntryScope,
   { archived = false }: { readonly archived?: boolean } = {},
 ): ProjectWithTotals[] {
   const rows = db()
@@ -20,10 +29,10 @@ export function listProjects(
       entryCount: sql<number>`count(${timeEntries.id})`,
     })
     .from(projects)
-    .leftJoin(timeEntries, eq(timeEntries.projectId, projects.id))
+    .leftJoin(timeEntries, scopedEntries(scope))
     .where(
       and(
-        eq(projects.organizationId, organizationId),
+        eq(projects.organizationId, scope.organizationId),
         archived ? sql`${projects.archivedAt} IS NOT NULL` : isNull(projects.archivedAt),
       ),
     )
@@ -58,7 +67,7 @@ export function allProjectOptions(organizationId: string): { id: string; name: s
     .map((p) => ({ id: p.id, name: p.name, code: p.code, archived: p.archivedAt !== null }));
 }
 
-export function getProject(organizationId: string, id: string): ProjectWithTotals | null {
+export function getProject(scope: EntryScope, id: string): ProjectWithTotals | null {
   const row = db()
     .select({
       project: projects,
@@ -66,8 +75,8 @@ export function getProject(organizationId: string, id: string): ProjectWithTotal
       entryCount: sql<number>`count(${timeEntries.id})`,
     })
     .from(projects)
-    .leftJoin(timeEntries, eq(timeEntries.projectId, projects.id))
-    .where(and(eq(projects.organizationId, organizationId), eq(projects.id, id)))
+    .leftJoin(timeEntries, scopedEntries(scope))
+    .where(and(eq(projects.organizationId, scope.organizationId), eq(projects.id, id)))
     .groupBy(projects.id)
     .get();
   if (row === undefined) return null;

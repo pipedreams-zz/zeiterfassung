@@ -8,7 +8,7 @@ import { requireActor } from "@/lib/actor";
 import { listEntries } from "@/lib/data/entries";
 import { projectOptions } from "@/lib/data/projects";
 import { env } from "@/lib/env";
-import { entryScope } from "@/lib/permissions";
+import { canSeeAllEntries, entryScope } from "@/lib/permissions";
 import { sumSeconds } from "@/lib/time/aggregate";
 import { decimalHours, hm } from "@/lib/time/format";
 import { periodRange, todayKey } from "@/lib/time/periods";
@@ -51,6 +51,7 @@ export default async function EntriesPage({
               tz={tz}
               back={back}
               deleteAction={deleteEntryAction}
+              showUser={canSeeAllEntries(actor)}
             />
           </Panel>
         </div>

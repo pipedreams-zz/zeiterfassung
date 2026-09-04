@@ -30,7 +30,7 @@ export function EmptyState({
 export function ErrorState({ message }: { readonly message: string }) {
   return (
     <p
-      className="rtx-hatch-attention flex gap-2 border border-attention px-4 py-3 text-ui text-attention"
+      className="hatch-attention flex gap-2 border border-attention px-4 py-3 text-ui text-attention"
       role="alert"
     >
       <span aria-hidden="true">▲</span>

@@ -5,7 +5,7 @@ import { decimalHours, formatDateTime, formatTime, hm } from "../time/format";
 
 /*
  * PDF der Auswertung: Helvetica, Schwarz und Grau, Haarlinien, Großbuchstaben-
- * Labels — die Baseline auf Papier. Die WOFF2-Schriften der Oberfläche kann
+ * Labels — die Oberfläche auf Papier. Die WOFF2-Schriften der Oberfläche kann
  * react-pdf nicht laden; Helvetica ist die neutrale Entsprechung.
  */
 const INK = "#141414";

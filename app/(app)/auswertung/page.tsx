@@ -17,6 +17,7 @@ import { requireActor } from "@/lib/actor";
 import { memberOptions } from "@/lib/data/members";
 import { allProjectOptions } from "@/lib/data/projects";
 import { env } from "@/lib/env";
+import { canSeeAllEntries } from "@/lib/permissions";
 import {
   buildReport,
   GROUPING_LABEL,
@@ -39,8 +40,9 @@ export default async function ReportPage({
   const query = parseReportQuery(await searchParams, tz);
   const report = buildReport(actor, query, tz);
   const projects = allProjectOptions(actor.organizationId);
-  const members = memberOptions(actor.organizationId);
-  const qs = reportQueryString(query);
+  const all = canSeeAllEntries(actor);
+  const members = all ? memberOptions(actor.organizationId) : [];
+  const qs = reportQueryString(report.query);
 
   return (
     <>
@@ -118,21 +120,23 @@ export default async function ReportPage({
               <span className="text-meta text-ink-3">Keine Auswahl = alle Projekte.</span>
             </PanelSection>
 
-            <PanelSection label="Person">
-              <select
-                className={SELECT}
-                name="person"
-                defaultValue={query.userId ?? ""}
-                aria-label="Person"
-              >
-                <option value="">Alle Personen</option>
-                {members.map((m) => (
-                  <option key={m.id} value={m.id}>
-                    {m.name}
-                  </option>
-                ))}
-              </select>
-            </PanelSection>
+            {all ? (
+              <PanelSection label="Person">
+                <select
+                  className={SELECT}
+                  name="person"
+                  defaultValue={query.userId ?? ""}
+                  aria-label="Person"
+                >
+                  <option value="">Alle Personen</option>
+                  {members.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.name}
+                    </option>
+                  ))}
+                </select>
+              </PanelSection>
+            ) : null}
 
             <PanelSection label="Gruppieren nach">
               <select
@@ -141,7 +145,7 @@ export default async function ReportPage({
                 defaultValue={query.group}
                 aria-label="Gruppierung"
               >
-                {GROUPINGS.map((g) => (
+                {GROUPINGS.filter((g) => all || g !== "user").map((g) => (
                   <option key={g} value={g}>
                     {GROUPING_LABEL[g]}
                   </option>

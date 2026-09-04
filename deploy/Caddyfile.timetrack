@@ -1,4 +1,0 @@
-timetrack.ampsrvr.xyz {
-  encode zstd gzip
-  reverse_proxy zeiterfassung:3000
-}

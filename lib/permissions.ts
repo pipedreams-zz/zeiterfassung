@@ -11,8 +11,8 @@ export interface Actor {
 
 /**
  * Die eine Stelle für Rechtefragen. Jede Abfrage von Zeiten läuft durch
- * `entryScope`; eine spätere Einschränkung („Mitarbeiter sehen nur eigene
- * Zeiten") ändert genau diese Funktion und ihren Test.
+ * `entryScope`: Owner sehen alle Zeiten der Organisation, Mitarbeiter nur
+ * ihre eigenen.
  */
 export interface EntryScope {
   readonly organizationId: string;
@@ -20,9 +20,14 @@ export interface EntryScope {
   readonly userId?: string;
 }
 
+export function canSeeAllEntries(actor: Actor): boolean {
+  return actor.role === "owner";
+}
+
 export function entryScope(actor: Actor): EntryScope {
-  // MVP-Entscheidung: alle Mitglieder einer Organisation sehen alle Zeiten.
-  return { organizationId: actor.organizationId };
+  return canSeeAllEntries(actor)
+    ? { organizationId: actor.organizationId }
+    : { organizationId: actor.organizationId, userId: actor.userId };
 }
 
 export function canManageUsers(actor: Actor): boolean {

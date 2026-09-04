@@ -15,7 +15,7 @@ import { ConfirmForm } from "@/components/form";
 import { ErrorState } from "@/components/list-state";
 import { requireActor } from "@/lib/actor";
 import { getProject } from "@/lib/data/projects";
-import { canArchiveProjects } from "@/lib/permissions";
+import { canArchiveProjects, canSeeAllEntries, entryScope } from "@/lib/permissions";
 import { decimalHours, formatDateTime, hm } from "@/lib/time/format";
 import { env } from "@/lib/env";
 
@@ -34,7 +34,7 @@ export default async function ProjectPage({
   const actor = await requireActor();
   const { id } = await params;
   const { fehler } = await searchParams;
-  const project = getProject(actor.organizationId, id);
+  const project = getProject(entryScope(actor), id);
   if (project === null) notFound();
 
   const archived = project.archivedAt !== null;
@@ -81,7 +81,7 @@ export default async function ProjectPage({
 
         <div className="flex flex-col gap-[18px]">
           <Panel>
-            <PanelHead title="Gesamt" />
+            <PanelHead title={canSeeAllEntries(actor) ? "Gesamt" : "Eigene Zeiten"} />
             <PanelSection>
               <p className="tabular font-display text-title-lg text-ink-1">
                 {hm(project.totalSeconds)} h

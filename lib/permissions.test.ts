@@ -4,6 +4,7 @@ import {
   canArchiveProjects,
   canEditEntry,
   canManageUsers,
+  canSeeAllEntries,
   entryScope,
   type Actor,
 } from "./permissions";
@@ -18,9 +19,14 @@ const owner: Actor = { ...base, userId: "u-owner", role: "owner" };
 const member: Actor = { ...base, userId: "u-member", role: "member" };
 
 describe("entryScope", () => {
-  it("sieht im MVP für beide Rollen die gesamte Organisation", () => {
+  it("Owner sehen die gesamte Organisation", () => {
     expect(entryScope(owner)).toEqual({ organizationId: "org-1" });
-    expect(entryScope(member)).toEqual({ organizationId: "org-1" });
+    expect(canSeeAllEntries(owner)).toBe(true);
+  });
+
+  it("Mitarbeiter sehen nur eigene Zeiten", () => {
+    expect(entryScope(member)).toEqual({ organizationId: "org-1", userId: "u-member" });
+    expect(canSeeAllEntries(member)).toBe(false);
   });
 });
 

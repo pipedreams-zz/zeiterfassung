@@ -10,7 +10,7 @@ import { requireActor } from "@/lib/actor";
 import { listEntries, runningEntries, runningEntry } from "@/lib/data/entries";
 import { projectOptions } from "@/lib/data/projects";
 import { env } from "@/lib/env";
-import { entryScope } from "@/lib/permissions";
+import { canSeeAllEntries, entryScope } from "@/lib/permissions";
 import { groupSeconds, secondsPerDay, sumSeconds } from "@/lib/time/aggregate";
 import { decimalHours, hm } from "@/lib/time/format";
 import { daysIn, periodRange, todayKey } from "@/lib/time/periods";
@@ -43,7 +43,9 @@ export default async function DashboardPage({
   const total = sumSeconds(entries);
   const projects = projectOptions(actor.organizationId);
   const running = runningEntry(actor.userId);
-  const others = runningEntries(actor.organizationId).filter((r) => r.id !== running?.id);
+  const others = canSeeAllEntries(actor)
+    ? runningEntries(actor.organizationId).filter((r) => r.id !== running?.id)
+    : [];
 
   let bars: Bar[];
   if (kind === "day") {
