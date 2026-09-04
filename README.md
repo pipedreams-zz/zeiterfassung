@@ -214,3 +214,8 @@ Ruhig und reduziert: zwei Schriften (Space Grotesk für Titel, Supreme für Text
 keine Rundungen, keine Schatten, ein Akzent, eine Achtungsfarbe. Status wird nie
 allein über Farbe vermittelt, kein Text unter 12 px, sichtbarer Tastaturfokus,
 reduzierte Bewegung wird respektiert.
+
+## Lizenz
+
+[MIT](LICENSE). Die Schriften Space Grotesk und Supreme sind unter ihren eigenen
+freien Lizenzen eingebunden.
