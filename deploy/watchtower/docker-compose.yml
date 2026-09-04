@@ -9,5 +9,7 @@ services:
     command: --label-enable --cleanup --interval 300
     environment:
       TZ: Europe/Berlin
+      # Das Image bringt einen alten Docker-Client mit; Docker 29 verlangt API >= 1.40.
+      DOCKER_API_VERSION: "1.44"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
