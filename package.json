@@ -1,0 +1,52 @@
+{
+  "name": "zeiterfassung",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.25.0",
+  "engines": {
+    "node": ">=22.12.0",
+    "pnpm": ">=11.0.0"
+  },
+  "scripts": {
+    "dev": "next dev --hostname 127.0.0.1 --port ${WEB_PORT:-3000}",
+    "build": "next build",
+    "start": "next start --hostname 0.0.0.0 --port ${PORT:-3000}",
+    "typecheck": "tsc --project tsconfig.json",
+    "lint": "eslint . && prettier --check .",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "db:generate": "drizzle-kit generate --config drizzle.config.ts",
+    "db:migrate": "tsx --env-file=.env.local scripts/migrate.ts",
+    "seed:dev": "tsx --env-file=.env.local scripts/seed-dev.ts"
+  },
+  "dependencies": {
+    "@date-fns/tz": "1.5.0",
+    "@react-pdf/renderer": "4.9.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "better-auth": "1.7.2",
+    "better-sqlite3": "13.0.3",
+    "date-fns": "4.4.0",
+    "drizzle-orm": "0.45.2",
+    "next": "16.3.4",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "tailwindcss": "4.3.3",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/better-sqlite3": "9.6.0",
+    "@types/node": "26.4.1",
+    "@types/react": "19.2.18",
+    "@types/react-dom": "19.2.7",
+    "drizzle-kit": "0.31.10",
+    "eslint": "10.9.1",
+    "happy-dom": "20.14.0",
+    "prettier": "3.9.6",
+    "tsx": "4.23.13",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.69.0",
+    "vitest": "4.1.11"
+  }
+}

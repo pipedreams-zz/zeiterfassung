@@ -1,0 +1,17 @@
+services:
+  zeiterfassung:
+    build: .
+    container_name: zeiterfassung
+    restart: unless-stopped
+    ports:
+      # Hinter einem Reverse-Proxy (Caddy, Traefik, nginx) nur lokal binden.
+      - "127.0.0.1:3000:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_PATH: /data/zeiterfassung.db
+    volumes:
+      - zeiterfassung-data:/data
+
+volumes:
+  zeiterfassung-data:

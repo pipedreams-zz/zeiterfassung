@@ -1,0 +1,11 @@
+node_modules
+.next
+data
+*.db
+*.db-*
+.env
+.env.local
+.env.*.local
+.git
+.claude
+coverage

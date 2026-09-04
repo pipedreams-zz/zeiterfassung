@@ -1,0 +1,6 @@
+allowBuilds:
+  better-sqlite3: true
+  esbuild: true
+minimumReleaseAgeExclude:
+  - "@types/react-dom@19.2.7"
+  - happy-dom@20.14.0

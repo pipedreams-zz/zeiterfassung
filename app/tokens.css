@@ -1,0 +1,249 @@
+/*
+ * Designtoken der Arbeitsumgebung.
+ *
+ * Verbindliche Quelle ist die Designbaseline
+ * `docs/design/prototype-baseline/v1.1.1/tokens/`. Die `--rtx-ai-*`-Werte sind
+ * von dort übernommen und nicht neu erfunden; Reihenfolge und Kommentare folgen
+ * den Baselinedateien color.css, typography.css, spacing.css,
+ * line-radius-shadow.css und motion.css.
+ *
+ * Darunter stehen die älteren `--rtx-*`-Namen dieser Anwendung. Sie bleiben
+ * erhalten, tragen aber keine eigenen Werte mehr: sie zeigen auf die Baseline.
+ * Damit gibt es genau **einen** Ort mit Farbwerten, und bestehende Ansichten
+ * wechseln die visuelle Sprache, ohne dass jede Klasse angefasst werden muss.
+ *
+ * Übernommen aus dem rendertaxi.ai-Repository (`packages/design-system`).
+ * Abweichend von dessen Baseline D-02 trägt diese Anwendung zusätzlich eine
+ * helle Fassung: `:root[data-theme="light"]` am Ende der Datei überschreibt
+ * ausschließlich Farbwerte. Maße, Schrift und Bewegung sind in beiden Modi
+ * identisch.
+ */
+
+:root {
+  /* ── Farbe ──────────────────────────────────────────────────────────────
+     Kontrastangaben gegen --rtx-ai-surface-panel (#171717), WCAG 2.1. */
+
+  /* Flächen */
+  --rtx-ai-bg-desk: #0c0c0c; /* Umgebung außerhalb der Anwendung */
+  --rtx-ai-bg-app: #121211; /* Anwendungsrahmen */
+  --rtx-ai-surface-bar: #141414; /* Kopf-, Fußleiste, Stege */
+  --rtx-ai-surface-panel: #171717; /* Seitenbereiche, Overlaypanel */
+  --rtx-ai-surface-raised: #1b1b1a; /* Hinweisblock, Notizkarte */
+  --rtx-ai-surface-inset: #1d1d1c; /* Eingabefeld, Prompttext, Diffzeile */
+  --rtx-ai-surface-select: #232322; /* ausgewählte Zeile, leerer Kachelplatz */
+  --rtx-ai-surface-chip: #2b2b29; /* gewählter Visual-Intent-Baustein */
+  --rtx-ai-canvas: #1f1f1e; /* Arbeitsfläche */
+  --rtx-ai-canvas-dot: #2b2b29; /* Rasterpunkt 1 px, Abstand 34 px */
+  --rtx-ai-canvas-plain: #151514; /* Arbeitsfläche ohne Raster: Vergleich, Export */
+  --rtx-ai-tool-bg: #101010; /* schwebende Werkzeugpalette */
+
+  /* Schrift */
+  --rtx-ai-ink-1: #ebeae7; /* Titel, aktive Werte — 14.6:1 */
+  --rtx-ai-ink-2: #b4b3ad; /* Standard- und UI-Text — 7.6:1 */
+  --rtx-ai-ink-3: #9a9993; /* Metatext ab 12 px — 5.4:1 */
+  --rtx-ai-ink-disabled: #6f6e69; /* nur zusammen mit Glyphe oder Text — 2.7:1 */
+  --rtx-ai-ink-on-accent: #141414; /* Schrift auf heller Fläche */
+
+  /* Akzent und Status */
+  --rtx-ai-accent: #ebeae7; /* primäre Aktion, Auswahl, Fortschritt */
+  --rtx-ai-focus: #ffffff; /* Tastaturfokus */
+  --rtx-ai-attention: #d8a44f; /* Fehler und Achtung, immer mit Glyphe und Text */
+  --rtx-ai-attention-fill: rgba(216, 164, 79, 0.16); /* Schraffur fehlgeschlagen */
+  --rtx-ai-discard-fill: rgba(235, 234, 231, 0.13); /* Schraffur verworfen */
+  --rtx-ai-scrim: rgba(10, 10, 10, 0.82); /* Beschriftung auf Bild */
+
+  /* ── Typografie ─────────────────────────────────────────────────────────
+     Zwei Familien, lokal eingebunden. Mindestgrößen: UI-Text 14 px,
+     Metatext 12 px. Kleiner ist nicht zulässig. */
+  --rtx-ai-font-display: "Space Grotesk", "Supreme", system-ui, sans-serif;
+  --rtx-ai-font-ui: "Supreme", "Helvetica Neue", Arial, sans-serif;
+
+  /* Titel — Space Grotesk, Gewicht 400, Laufweite -0.01em */
+  --rtx-ai-title-lg-size: 26px; /* Leerzustand, großer Einstieg */
+  --rtx-ai-title-md-size: 19px; /* Blattkopf */
+  --rtx-ai-title-sm-size: 18px; /* Panelkopf mit Eigenname */
+  --rtx-ai-title-tracking: -0.01em;
+  --rtx-ai-title-weight: 400;
+
+  /* Text und UI — Supreme */
+  --rtx-ai-body-size: 14px;
+  --rtx-ai-body-line: 1.6;
+  --rtx-ai-ui-size: 14px; /* Listeneintrag, Baustein, Schalter */
+  --rtx-ai-ui-size-sm: 13px; /* sekundäre Schaltfläche, Werkzeugpalette */
+  --rtx-ai-meta-size: 12px; /* Metazeile, Statuszeile, Rechtezustand */
+  --rtx-ai-meta-line: 1.6;
+
+  /* Label, durchgehend Großbuchstaben */
+  --rtx-ai-label-size: 12px;
+  --rtx-ai-label-tracking: 0.14em;
+  --rtx-ai-label-transform: uppercase;
+  --rtx-ai-label-axis-tracking: 0.08em; /* Dimensionsspalte im Rezept */
+
+  /* Schaltflächen */
+  --rtx-ai-button-size: 14px;
+  --rtx-ai-button-size-sm: 13px;
+  --rtx-ai-button-tracking: 0.1em;
+
+  /* ── Abstände und Layoutmaße ────────────────────────────────────────────
+     Basisschritt 4 px. Panelbreiten sind feste Werte, keine Prozentanteile. */
+  --rtx-ai-space-1: 4px;
+  --rtx-ai-space-2: 6px;
+  --rtx-ai-space-3: 8px;
+  --rtx-ai-space-4: 11px;
+  --rtx-ai-space-5: 14px;
+  --rtx-ai-space-6: 18px;
+  --rtx-ai-space-7: 22px;
+  --rtx-ai-space-8: 32px;
+
+  /* Rahmenzonen */
+  --rtx-ai-topbar-h: 44px;
+  --rtx-ai-statusbar-h: 30px;
+  --rtx-ai-panel-head-h: 38px;
+  --rtx-ai-tool-h: 38px;
+  --rtx-ai-tool-item-h: 30px;
+
+  /* Seitenbereiche */
+  --rtx-ai-panel-in-w: 300px; /* Eingang bei 1920 */
+  --rtx-ai-panel-in-w-1440: 280px; /* Eingang bei 1440 */
+  --rtx-ai-panel-out-w: 420px; /* Rezept und Ausgang bei 1920 */
+  --rtx-ai-panel-out-w-1440: 390px; /* Rezept als Überlagerung bei 1440 */
+  --rtx-ai-panel-max-w: 460px; /* Obergrenze ab 2560 */
+  --rtx-ai-rail-w: 44px; /* eingeklappter Seitenbereich */
+  /* responsive-behavior.md nennt für 2560 einen Eingang von höchstens 320 px.
+     Die Baselinedatei spacing.css führt den Wert nicht; er steht hier, damit
+     die Obergrenze nicht als Zahl im Anwendungscode landet. */
+  --rtx-ai-panel-in-w-2560: 320px;
+  /* Abstand der Rezeptüberlagerung zum Fensterrand bei 1440 */
+  --rtx-ai-overlay-inset: 14px;
+
+  /* Arbeitsfläche */
+  --rtx-ai-canvas-grid: 34px; /* Rasterabstand */
+  --rtx-ai-hit-min: 44px; /* Mindesthöhe primärer Bedienelemente */
+
+  /* ── Linien, Radien, Schatten ───────────────────────────────────────────
+     Kanten statt Weichzeichnung. */
+  --rtx-ai-line-soft: #262523; /* Trennung innerhalb eines Panels */
+  --rtx-ai-line: #2f2e2c; /* Panelgrenze, Spur eines Fortschritts */
+  --rtx-ai-line-strong: #3f3e3b; /* Bildrahmen, sekundäre Schaltfläche */
+  --rtx-ai-line-frame: #4a4946; /* Rahmen um Bildknoten, Schwebekarte, Chip */
+  --rtx-ai-line-dashed: #55544f; /* gestrichelt: leer, gesperrt, verworfen */
+
+  --rtx-ai-line-w: 1px;
+  --rtx-ai-select-w: 1px; /* Auswahl: durchgehende helle Kontur, außen */
+  --rtx-ai-focus-w: 2px; /* Tastaturfokus */
+  --rtx-ai-focus-offset: 2px;
+  --rtx-ai-progress-h: 3px;
+  --rtx-ai-progress-h-lg: 4px;
+  --rtx-ai-note-bar-w: 2px; /* linke Kante an Notiz und Hinweisblock */
+
+  /* Radien: keine. Nur Rechtecke — auch Bilder, Chips und Schaltflächen. */
+  --rtx-ai-radius: 0;
+
+  /* Schatten: keiner. Schwebende Ebenen (Werkzeugpalette, Rezeptkarte,
+     Overlaypanel) tragen eine 1-px-Kante in --rtx-ai-line-frame und eine
+     dunklere Fläche. Keine Weichzeichnung, keine Glaseffekte. */
+  --rtx-ai-shadow: none;
+
+  /* ── Motion ─────────────────────────────────────────────────────────────
+     Nur funktionale Bewegung: Panel, Zoom, Fortschritt, Wischen. */
+  --rtx-ai-dur-instant: 0ms; /* Auswahl, Zustandswechsel eines Bausteins */
+  --rtx-ai-dur-short: 120ms; /* Hover, Fokus, Schalter */
+  --rtx-ai-dur-panel: 200ms; /* Seitenbereich klappt oder überlagert */
+  --rtx-ai-dur-view: 280ms; /* Zoom auf Blickpunkt, Ausschnittwechsel */
+  --rtx-ai-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --rtx-ai-progress-tick: 1000ms; /* Fortschritt höchstens sekündlich */
+
+  /* ── Ältere Namen dieser Anwendung ──────────────────────────────────────
+     Zusammenführung statt zweiter Wahrheit: die Namen bleiben, die Werte
+     kommen aus der Baseline. */
+  --rtx-surface-base: var(--rtx-ai-bg-app);
+  --rtx-surface-raised: var(--rtx-ai-surface-panel);
+  --rtx-surface-overlay: var(--rtx-ai-surface-raised);
+  --rtx-border-subtle: var(--rtx-ai-line);
+  --rtx-border-strong: var(--rtx-ai-line-frame);
+
+  --rtx-text-primary: var(--rtx-ai-ink-1);
+  --rtx-text-secondary: var(--rtx-ai-ink-2);
+  --rtx-text-muted: var(--rtx-ai-ink-3);
+
+  --rtx-accent: var(--rtx-ai-accent);
+  --rtx-accent-contrast: var(--rtx-ai-ink-on-accent);
+
+  /*
+   * Die Baseline führt genau eine Achtungsfarbe für „Fehler und Achtung“
+   * (accessibility.md) und keine Erfolgsfarbe: Status trägt immer Glyphe,
+   * Rahmenform und Text, nie nur Farbe (D-09). Deshalb zeigen Gefahr und
+   * Warnung auf dieselbe Achtungsfarbe, und Erfolg auf die helle Tinte.
+   */
+  --rtx-status-danger: var(--rtx-ai-attention);
+  --rtx-status-warning: var(--rtx-ai-attention);
+  --rtx-status-success: var(--rtx-ai-ink-1);
+
+  --rtx-font-sans: var(--rtx-ai-font-ui);
+  --rtx-font-display: var(--rtx-ai-font-display);
+  --rtx-font-mono: ui-monospace, "SFMono-Regular", "JetBrains Mono", Menlo, monospace;
+
+  --rtx-space-1: var(--rtx-ai-space-1);
+  --rtx-space-2: var(--rtx-ai-space-3);
+  --rtx-space-3: var(--rtx-ai-space-4);
+  --rtx-space-4: var(--rtx-ai-space-5);
+  --rtx-space-6: var(--rtx-ai-space-6);
+  --rtx-space-8: var(--rtx-ai-space-8);
+
+  /* Baseline D-03: minimale Radien, das heißt keine. */
+  --rtx-radius-sm: var(--rtx-ai-radius);
+  --rtx-radius-md: var(--rtx-ai-radius);
+}
+
+/*
+ * Reduzierte Bewegung: Panel-, Zoom- und Ausschnittdauern auf 0 ms, die
+ * Zustände wechseln sofort. Fortschritt bleibt lesbar — Zahl und Balkenlänge
+ * ändern sich weiterhin, nur ohne laufende Animation.
+ */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --rtx-ai-dur-short: 0ms;
+    --rtx-ai-dur-panel: 0ms;
+    --rtx-ai-dur-view: 0ms;
+  }
+}
+
+/*
+ * ── Helle Fassung ───────────────────────────────────────────────────────
+ * Werte der Hell-Exploration der Baseline (decisions.md D-02,
+ * explore-light-workspace-collapsed-1920.html). Gleiche Struktur, gleiche
+ * Zustandslogik, nur die Fläche wechselt. Kontrastangaben gegen #ffffff.
+ */
+:root[data-theme="light"] {
+  --rtx-ai-bg-desk: #ffffff;
+  --rtx-ai-bg-app: #f4f3f0;
+  --rtx-ai-surface-bar: #f4f3f0;
+  --rtx-ai-surface-panel: #ffffff;
+  --rtx-ai-surface-raised: #f7f6f3;
+  --rtx-ai-surface-inset: #f4f3f0;
+  --rtx-ai-surface-select: #e8e7e3;
+  --rtx-ai-surface-chip: #dedcd7;
+  --rtx-ai-canvas: #e8e7e3;
+  --rtx-ai-canvas-dot: #d4d2cd;
+  --rtx-ai-canvas-plain: #f4f3f0;
+  --rtx-ai-tool-bg: #ffffff;
+
+  --rtx-ai-ink-1: #141414; /* 17.4:1 */
+  --rtx-ai-ink-2: #3a3a37; /* 11.1:1 */
+  --rtx-ai-ink-3: #5a5a56; /* 6.6:1 */
+  --rtx-ai-ink-disabled: #9a9993; /* nur mit Glyphe oder Text */
+  --rtx-ai-ink-on-accent: #ffffff;
+
+  --rtx-ai-accent: #141414;
+  --rtx-ai-focus: #141414;
+  --rtx-ai-attention: #8a5f16; /* 5.6:1 */
+  --rtx-ai-attention-fill: rgba(138, 95, 22, 0.14);
+  --rtx-ai-discard-fill: rgba(20, 20, 20, 0.13);
+  --rtx-ai-scrim: rgba(255, 255, 255, 0.9);
+
+  --rtx-ai-line-soft: #ecebe7;
+  --rtx-ai-line: #e5e3de;
+  --rtx-ai-line-strong: #c9c7c1;
+  --rtx-ai-line-frame: #b8b6b0;
+  --rtx-ai-line-dashed: #a8a6a0;
+}
