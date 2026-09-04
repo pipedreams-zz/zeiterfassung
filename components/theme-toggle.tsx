@@ -52,7 +52,7 @@ export function ThemeToggle({ initial }: { readonly initial: ThemeChoice }) {
           type="button"
           role="radio"
           aria-checked={choice === c}
-          className={`min-h-[24px] px-2 text-meta tracking-[0.1em] uppercase ${
+          className={`min-h-[26px] px-2 text-meta tracking-[0.1em] uppercase ${
             choice === c ? "bg-accent text-on-accent" : "text-ink-3 hover:text-ink-1"
           }`}
           onClick={() => {

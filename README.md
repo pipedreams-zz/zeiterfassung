@@ -99,14 +99,18 @@ ersetzen und `docker compose up -d` (Watchtower folgt dann diesem Tag).
 
 ## Rollen und Sichtbarkeit
 
-Jeder Benutzer gehört zu einer Organisation mit der Rolle `owner` oder
-`member`. Projekte sind organisationsweit; Zeiten hängen an der Person.
-Im aktuellen Stand sehen beide Rollen alle Zeiten der Organisation; nur Owner
-verwalten Benutzer und archivieren Projekte. Die Sichtbarkeit ist an einer
-Stelle gebündelt (`lib/permissions.ts`, `entryScope`), damit eine spätere
-Einschränkung für Mitarbeiter eine Ein-Stellen-Änderung bleibt. Mehrere
-Organisationen sind im Datenmodell vorgesehen, eine Umschaltung in der
-Oberfläche noch nicht.
+Jeder Benutzer gehört zu einer oder mehreren Organisationen, jeweils mit der
+Rolle `owner` oder `member`. Projekte und Zeiten sind je Organisation getrennt;
+Zeiten hängen an der Person. Im aktuellen Stand sehen beide Rollen alle Zeiten
+der Organisation; nur Owner verwalten Mitglieder und archivieren Projekte. Die
+Sichtbarkeit ist an einer Stelle gebündelt (`lib/permissions.ts`, `entryScope`),
+damit eine spätere Einschränkung für Mitarbeiter eine Ein-Stellen-Änderung
+bleibt.
+
+Weitere Organisationen legt ein Owner unter **Verwaltung → Organisation** an und
+wird dort Owner. Bestehende Konten ordnet er über „Neues Mitglied" ohne Passwort
+zu. Die aktive Organisation wählt jede Person in der Kopfleiste; die Wahl liegt
+in einem Cookie.
 
 ## Befehle
 

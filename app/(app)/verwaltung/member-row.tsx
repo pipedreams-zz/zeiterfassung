@@ -8,7 +8,13 @@ import type { Member } from "@/lib/data/members";
 import { INITIAL_FORM } from "@/lib/forms";
 import { ROLES } from "@/lib/schema";
 
-import { setActiveAction, setNameAction, setPasswordAction, setRoleAction } from "./actions";
+import {
+  removeMemberAction,
+  setActiveAction,
+  setNameAction,
+  setPasswordAction,
+  setRoleAction,
+} from "./actions";
 
 const ROLE_LABEL: Record<(typeof ROLES)[number], string> = {
   owner: "Owner",
@@ -21,6 +27,7 @@ export function MemberRow({ member, self }: { readonly member: Member; readonly 
   const [nameState, nameAction] = useActionState(setNameAction, INITIAL_FORM);
   const [pwState, pwAction] = useActionState(setPasswordAction, INITIAL_FORM);
   const [activeState, activeAction] = useActionState(setActiveAction, INITIAL_FORM);
+  const [removeState, removeAction] = useActionState(removeMemberAction, INITIAL_FORM);
 
   return (
     <li className={`bg-panel ${member.active ? "" : "text-ink-off"}`}>
@@ -122,6 +129,28 @@ export function MemberRow({ member, self }: { readonly member: Member; readonly 
               Deaktivierte Konten können sich nicht anmelden; ihre Zeiten bleiben erhalten.
             </span>
             <FormMessage state={activeState} />
+          </form>
+
+          <form
+            action={removeAction}
+            className="flex flex-col gap-2 md:col-span-2"
+            onSubmit={(e) => {
+              if (!window.confirm(`${member.name} aus dieser Organisation entfernen?`))
+                e.preventDefault();
+            }}
+          >
+            <input type="hidden" name="userId" value={member.userId} />
+            <span className="text-meta tracking-[0.14em] text-ink-3 uppercase">Mitgliedschaft</span>
+            <div>
+              <button className={SECONDARY_ACTION} type="submit" disabled={self}>
+                Aus Organisation entfernen
+              </button>
+            </div>
+            <span className="text-meta text-ink-3">
+              Das Konto bleibt bestehen und kann in anderen Organisationen weiter genutzt werden;
+              gebuchte Zeiten bleiben hier erhalten.
+            </span>
+            <FormMessage state={removeState} />
           </form>
         </div>
       ) : null}

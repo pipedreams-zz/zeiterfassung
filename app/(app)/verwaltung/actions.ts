@@ -1,14 +1,20 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { requireOwner } from "@/lib/actor";
+import { ORG_COOKIE, requireOwner } from "@/lib/actor";
 import { setPassword } from "@/lib/auth";
 import {
   countOwners,
   createMember,
+  createOrganization,
+  findUserByEmail,
   getMember,
+  listUserOrganizations,
+  removeMembership,
   renameOrganization,
   setMemberActive,
   setMemberRole,
@@ -22,7 +28,7 @@ const PASSWORD_MIN = 10;
 const newMemberSchema = z.object({
   email: z.email("E-Mail-Adresse ist ungültig.").transform((s) => s.toLowerCase()),
   name: z.string().min(1, "Name fehlt.").max(120),
-  password: z.string().min(PASSWORD_MIN, `Passwort braucht mindestens ${PASSWORD_MIN} Zeichen.`),
+  password: z.string(),
   role: z.enum(ROLES),
 });
 
@@ -36,12 +42,19 @@ export async function createMemberAction(_prev: FormState, form: FormData): Prom
   });
   if (!parsed.success) return { error: parsed.error.issues[0]?.message ?? "Eingabe ungültig." };
 
-  if (getMember(actor.organizationId, parsed.data.email) !== null) {
+  const existing = findUserByEmail(parsed.data.email);
+  if (existing !== null && getMember(actor.organizationId, existing.id) !== null) {
     return { error: "Diese Adresse ist bereits Mitglied." };
+  }
+  if (existing === null && parsed.data.password.length < PASSWORD_MIN) {
+    return { error: `Neues Konto: Passwort braucht mindestens ${PASSWORD_MIN} Zeichen.` };
   }
 
   try {
-    await createMember(actor.organizationId, parsed.data);
+    await createMember(actor.organizationId, {
+      ...parsed.data,
+      password: existing === null ? parsed.data.password : null,
+    });
   } catch (e) {
     const message = e instanceof Error ? e.message : "";
     return {
@@ -122,5 +135,43 @@ export async function renameOrganizationAction(
   if (name === "" || name.length > 120) return { error: "Name fehlt oder ist zu lang." };
   renameOrganization(actor.organizationId, name);
   revalidatePath("/", "layout");
+  return { ok: true };
+}
+
+export async function createOrganizationAction(
+  _prev: FormState,
+  form: FormData,
+): Promise<FormState> {
+  const actor = await requireOwner();
+  const name = field(form, "name");
+  if (name === "" || name.length > 120) return { error: "Name fehlt oder ist zu lang." };
+  if (
+    listUserOrganizations(actor.userId).some((o) => o.name.toLowerCase() === name.toLowerCase())
+  ) {
+    return { error: "Eine Organisation mit diesem Namen gibt es bereits." };
+  }
+  const id = createOrganization(name, actor.userId);
+  (await cookies()).set(ORG_COOKIE, id, {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 60 * 60 * 24 * 365,
+  });
+  revalidatePath("/", "layout");
+  redirect("/verwaltung");
+}
+
+export async function removeMemberAction(_prev: FormState, form: FormData): Promise<FormState> {
+  const actor = await requireOwner();
+  const userId = field(form, "userId");
+  if (userId === actor.userId)
+    return { error: "Die eigene Mitgliedschaft lässt sich hier nicht entfernen." };
+  const member = getMember(actor.organizationId, userId);
+  if (member === null) return { error: "Mitglied nicht gefunden." };
+  if (member.role === "owner" && countOwners(actor.organizationId) <= 1) {
+    return { error: "Mindestens ein Owner muss bleiben." };
+  }
+  removeMembership(actor.organizationId, userId);
+  revalidatePath("/verwaltung");
   return { ok: true };
 }

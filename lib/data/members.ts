@@ -43,14 +43,32 @@ export function countOwners(organizationId: string): number {
   return listMembers(organizationId).filter((m) => m.role === "owner" && m.active).length;
 }
 
+export function findUserByEmail(email: string): { id: string; name: string } | null {
+  return (
+    db().select({ id: users.id, name: users.name }).from(users).where(eq(users.email, email)).get() ??
+    null
+  );
+}
+
+/**
+ * Legt ein Konto an, falls die Adresse neu ist, und die Mitgliedschaft in der
+ * Organisation. Für ein bestehendes Konto ist kein Passwort nötig — es wird
+ * nur zugeordnet, Name und Passwort bleiben unverändert.
+ */
 export async function createMember(
   organizationId: string,
-  input: { readonly email: string; readonly name: string; readonly password: string; readonly role: Role },
+  input: {
+    readonly email: string;
+    readonly name: string;
+    readonly password: string | null;
+    readonly role: Role;
+  },
 ): Promise<string> {
-  const existing = db().select({ id: users.id }).from(users).where(eq(users.email, input.email)).get();
+  const existing = findUserByEmail(input.email);
 
   let userId: string;
-  if (existing === undefined) {
+  if (existing === null) {
+    if (input.password === null) throw new Error("password_required");
     const result = await internalAuth().api.signUpEmail({
       body: { email: input.email, password: input.password, name: input.name },
     });
@@ -92,6 +110,56 @@ export async function setMemberActive(userId: string, active: boolean): Promise<
 
 export function updateMemberName(userId: string, name: string): void {
   db().update(users).set({ name, updatedAt: new Date() }).where(eq(users.id, userId)).run();
+}
+
+export interface UserOrganization {
+  readonly id: string;
+  readonly name: string;
+  readonly role: Role;
+  readonly memberCount: number;
+}
+
+/** Alle Organisationen eines Benutzers, älteste Mitgliedschaft zuerst. */
+export function listUserOrganizations(userId: string): UserOrganization[] {
+  const rows = db()
+    .select({
+      id: organizations.id,
+      name: organizations.name,
+      role: memberships.role,
+      since: memberships.createdAt,
+    })
+    .from(memberships)
+    .innerJoin(organizations, eq(organizations.id, memberships.organizationId))
+    .where(eq(memberships.userId, userId))
+    .orderBy(asc(memberships.createdAt))
+    .all();
+  return rows.map((r) => ({
+    id: r.id,
+    name: r.name,
+    role: r.role,
+    memberCount: listMembers(r.id).length,
+  }));
+}
+
+/** Neue Organisation; der Anlegende wird ihr Owner. */
+export function createOrganization(name: string, ownerUserId: string): string {
+  const id = uuidv7();
+  const now = nowIso();
+  db().transaction((tx) => {
+    tx.insert(organizations).values({ id, name, createdAt: now }).run();
+    tx.insert(memberships)
+      .values({ id: uuidv7(), userId: ownerUserId, organizationId: id, role: "owner", createdAt: now })
+      .run();
+  });
+  return id;
+}
+
+/** Mitgliedschaft entfernen; Zeiten der Person bleiben in der Organisation. */
+export function removeMembership(organizationId: string, userId: string): void {
+  db()
+    .delete(memberships)
+    .where(and(eq(memberships.userId, userId), eq(memberships.organizationId, organizationId)))
+    .run();
 }
 
 export function renameOrganization(organizationId: string, name: string): void {

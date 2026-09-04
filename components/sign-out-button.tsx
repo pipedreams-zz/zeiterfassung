@@ -10,7 +10,7 @@ export function SignOutButton() {
 
   return (
     <button
-      className="inline-flex min-h-[24px] items-center border border-line-strong px-2 py-1 text-meta tracking-[0.1em] text-ink-2 uppercase hover:text-ink-1 disabled:text-ink-off"
+      className="inline-flex min-h-[28px] items-center border border-line-strong px-2 text-meta tracking-[0.1em] text-ink-2 uppercase hover:text-ink-1 disabled:text-ink-off"
       type="button"
       disabled={pending}
       onClick={async () => {

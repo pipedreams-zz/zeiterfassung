@@ -130,7 +130,7 @@ export function RunningBadge({ running }: { readonly running: TimerRunning }) {
   return (
     <a
       href="/"
-      className="flex min-h-[28px] items-center gap-2 border border-ink-1 px-[9px] text-ui-sm text-ink-1"
+      className="flex min-h-[28px] items-center gap-2 border border-ink-1 px-[9px] text-meta text-ink-1"
     >
       <span aria-hidden="true" className="text-ink-1">
         ●

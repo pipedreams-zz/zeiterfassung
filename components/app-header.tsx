@@ -2,13 +2,15 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { BrandMark } from "./brand-mark";
+import { OrgSwitcher, type OrgOption } from "./org-switcher";
 import { SignOutButton } from "./sign-out-button";
 import { ThemeToggle, type ThemeChoice } from "./theme-toggle";
 
 export interface AppHeaderProps {
   readonly email: string;
   readonly name: string;
-  readonly organizationName: string;
+  readonly organizations: readonly OrgOption[];
+  readonly organizationId: string;
   readonly theme: ThemeChoice;
   /** Zustandsanzeige rechts, etwa die laufende Stoppuhr. */
   readonly trailing?: ReactNode;
@@ -25,8 +27,18 @@ function initials(name: string, email: string): string {
   return (letters || "··").toUpperCase();
 }
 
-/** Kopfleiste, 44 px, über allen Ansichten identisch. */
-export function AppHeader({ email, name, organizationName, theme, trailing }: AppHeaderProps) {
+/**
+ * Kopfleiste, 44 px, über allen Ansichten identisch. Alle Bedienelemente
+ * rechts sind 28 px hoch (Stoppuhr, Kürzel, Farbschema, Abmelden).
+ */
+export function AppHeader({
+  email,
+  name,
+  organizations,
+  organizationId,
+  theme,
+  trailing,
+}: AppHeaderProps) {
   return (
     <header className="flex h-[44px] flex-none items-center justify-between gap-4 border-b border-line bg-bar px-4">
       <div className="flex min-w-0 items-center gap-4">
@@ -35,7 +47,9 @@ export function AppHeader({ email, name, organizationName, theme, trailing }: Ap
           <span className="font-display text-ui tracking-[-0.01em]">Zeiterfassung</span>
         </Link>
         <span aria-hidden="true" className="hidden h-[18px] w-px flex-none bg-line sm:block" />
-        <span className="hidden truncate text-ui text-ink-2 sm:block">{organizationName}</span>
+        <div className="hidden min-w-0 sm:block">
+          <OrgSwitcher organizations={organizations} activeId={organizationId} />
+        </div>
       </div>
 
       <div className="flex min-w-0 flex-none items-center gap-[14px]">
@@ -43,7 +57,7 @@ export function AppHeader({ email, name, organizationName, theme, trailing }: Ap
         <span className="hidden text-meta text-ink-3 lg:block">{email}</span>
         <span
           aria-hidden="true"
-          className="flex h-6 w-6 flex-none items-center justify-center border border-line-frame text-meta text-ink-1"
+          className="flex h-[28px] w-[28px] flex-none items-center justify-center border border-line-frame text-meta text-ink-1"
         >
           {initials(name, email)}
         </span>

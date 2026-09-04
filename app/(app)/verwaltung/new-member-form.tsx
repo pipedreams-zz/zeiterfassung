@@ -41,13 +41,14 @@ export function NewMemberForm() {
           onChange={(e) => setV({ ...v, email: e.target.value })}
         />
       </Field>
-      <Field label="Anfangspasswort" hint="Mindestens 10 Zeichen. Bitte persönlich übergeben.">
+      <Field
+        label="Anfangspasswort"
+        hint="Mindestens 10 Zeichen, persönlich übergeben. Leer lassen, wenn die Person schon ein Konto in einer anderen Organisation hat."
+      >
         <input
           className={FIELD}
           name="password"
           type="password"
-          minLength={10}
-          required
           autoComplete="new-password"
           value={v.password}
           onChange={(e) => setV({ ...v, password: e.target.value })}

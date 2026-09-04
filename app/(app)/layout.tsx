@@ -7,6 +7,7 @@ import { Nav, type NavItem } from "@/components/nav";
 import { RunningBadge } from "@/components/timer";
 import { requireActor } from "@/lib/actor";
 import { runningEntry } from "@/lib/data/entries";
+import { listUserOrganizations } from "@/lib/data/members";
 import { canManageUsers } from "@/lib/permissions";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { parseTheme } from "@/lib/theme";
@@ -17,6 +18,10 @@ export default async function AppLayout({ children }: { readonly children: React
   const actor = await requireActor();
   const theme = parseTheme((await cookies()).get("theme")?.value);
   const running = runningEntry(actor.userId);
+  const organizations = listUserOrganizations(actor.userId).map((o) => ({
+    id: o.id,
+    name: o.name,
+  }));
 
   const items: NavItem[] = [
     { href: "/", label: "Dashboard", short: "Start" },
@@ -32,7 +37,8 @@ export default async function AppLayout({ children }: { readonly children: React
         <AppHeader
           email={actor.email}
           name={actor.name}
-          organizationName={actor.organizationName}
+          organizations={organizations}
+          organizationId={actor.organizationId}
           theme={theme}
           trailing={running === null ? null : <RunningBadge running={running} />}
         />
